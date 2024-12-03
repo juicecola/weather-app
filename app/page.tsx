@@ -1,38 +1,116 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import SearchBar from "./components/SearchBar";
-import WeatherCard from "./components/WeatherCard";
+import React, { useState } from 'react';
+import WeatherCard from './components/WeatherCard';
+import ForecastCard from './components/ForecastCard';
 
-import { fetchWeatherData } from "./utils/api";
+// Define interfaces for type safety
+interface WeatherData {
+  location: string;
+  temperature: number;
+  description: string;
+  icon: string;
+  windSpeed: number;
+  humidity: number;
+  date: string;
+}
+
+interface ForecastData extends WeatherData {
+  day: string;
+}
 
 export default function Home() {
-  const [weather, setWeather] = useState<any>(null);
+  const [city, setCity] = useState<string>('');
+  const [currentWeather, setCurrentWeather] = useState<WeatherData | null>(null);
+  const [forecast, setForecast] = useState<ForecastData[]>([]);
+  const [isCelsius, setIsCelsius] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSearch = async (city: string) => {
+  const handleSearch = async () => {
+    if (!city) return;
+
     try {
+      // Mock implementation - replace with actual API call
+      const weatherData: WeatherData = {
+        location: city,
+        temperature: 25,
+        description: 'Partly cloudy',
+        icon: '02d',
+        windSpeed: 5.5,
+        humidity: 65,
+        date: new Date().toLocaleDateString()
+      };
+      
+      const forecastData: ForecastData[] = [
+        {
+          ...weatherData,
+          day: 'Mon'
+        },
+        {
+          ...weatherData,
+          day: 'Tue'
+        },
+        {
+          ...weatherData,
+          day: 'Wed'
+        }
+      ];
+      
+      setCurrentWeather(weatherData);
+      setForecast(forecastData);
       setError(null);
-      const data = await fetchWeatherData(city);
-      setWeather({
-        city: data.name,
-        date: new Date().toLocaleDateString(),
-        temp: data.main.temp,
-        description: data.weather[0].description,
-        icon: `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`,
-        wind: data.wind.speed,
-        humidity: data.main.humidity,
-      });
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+      setError(errorMessage);
+      setCurrentWeather(null);
+      setForecast([]);
     }
   };
 
+  const toggleUnit = () => {
+    setIsCelsius(!isCelsius);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <SearchBar onSearch={handleSearch} />
-      {error && <p className="text-red-500">{error}</p>}
-      {weather && <WeatherCard weather={weather} />}
+    <div className="container mx-auto p-4">
+      <div className="flex mb-4">
+        <input 
+          type="text" 
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          placeholder="Enter city name" 
+          className="input input-bordered w-full max-w-xs mr-2"
+        />
+        <button onClick={handleSearch} className="btn btn-primary">
+          Search
+        </button>
+      </div>
+
+      {error && (
+        <div role="alert" className="alert alert-error">
+          <span>{error}</span>
+        </div>
+      )}
+
+      {currentWeather && (
+        <WeatherCard 
+          data={currentWeather} 
+          isCelsius={isCelsius} 
+          toggleUnit={toggleUnit}
+        />
+      )}
+
+      {forecast.length > 0 && (
+        <div className="grid grid-cols-3 gap-4 mt-4">
+          {forecast.map((day, index) => (
+            <ForecastCard 
+              key={index} 
+              data={day} 
+              isCelsius={isCelsius} 
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
