@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  images: {
+    domains: ['openweathermap.org'], // Allow loading images from openweathermap.org
+  },
 };
 
 module.exports = nextConfig;
