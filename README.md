@@ -1,21 +1,24 @@
-Weather App (Next.js)
-Welcome to the Weather App frontend! This application allows users to search for weather updates in their city and view detailed forecasts.
+Frontend: Weather App
+Overview
+This is the frontend for the Weather App, built using Next.js and TypeScript. The app allows users to search for weather updates and view detailed forecasts in a visually appealing interface.
 
 Features
-Search for weather by city name.
+Search weather data by city.
 Toggle between Celsius and Fahrenheit.
-View current weather details, including temperature, weather description, wind status, and humidity.
+Display:
+Current temperature and weather conditions.
 Forecast for the next three days.
+Wind and humidity details.
 Tech Stack
 Framework: Next.js with TypeScript
-Styling: TailwindCSS and RippleUI components
+Styling: TailwindCSS and RippleUI
 AJAX Requests: Fetch API
-Setup Instructions
+Setup
 Clone the Repository:
 
 bash
 Copy code
-git clone <repository-url>
+git clone https://github.com/juicecola/weather-app
 cd weather-app
 Install Dependencies:
 
@@ -27,7 +30,7 @@ Run the Development Server:
 bash
 Copy code
 npm run dev
-The app will be available at http://localhost:3000.
+Open http://localhost:3000 in your browser.
 
 Build for Production:
 
@@ -35,14 +38,13 @@ bash
 Copy code
 npm run build
 npm start
-File Structure
-pages/: Application pages, including the weather search interface.
-components/: Reusable UI components built with RippleUI.
-public/: Static assets like images or icons.
 API Integration
-This app fetches weather data from a Laravel backend that retrieves information from OpenWeather’s APIs. Ensure the backend is running before using the app.
+The frontend fetches weather data from the Laravel-based backend API, which communicates with OpenWeather APIs. Ensure the backend is running and accessible.
 
+File Structure
+pages/: Contains Next.js pages.
+components/: Reusable UI components.
+public/: Static assets.
 Extras
-TypeScript ensures type safety and fewer runtime errors.
-Fully responsive design for mobile and desktop users.
-Enjoy exploring the weather in your city! 🌤️
+Fully responsive design for various devices.
+TypeScript for type safety and maintainable code.
