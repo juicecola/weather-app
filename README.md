@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Weather App (Next.js)
+Welcome to the Weather App frontend! This application allows users to search for weather updates in their city and view detailed forecasts.
 
-## Getting Started
+Features
+Search for weather by city name.
+Toggle between Celsius and Fahrenheit.
+View current weather details, including temperature, weather description, wind status, and humidity.
+Forecast for the next three days.
+Tech Stack
+Framework: Next.js with TypeScript
+Styling: TailwindCSS and RippleUI components
+AJAX Requests: Fetch API
+Setup Instructions
+Clone the Repository:
 
-First, run the development server:
+bash
+Copy code
+git clone <repository-url>
+cd weather-app
+Install Dependencies:
 
-```bash
+bash
+Copy code
+npm install
+Run the Development Server:
+
+bash
+Copy code
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+The app will be available at http://localhost:3000.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Build for Production:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+bash
+Copy code
+npm run build
+npm start
+File Structure
+pages/: Application pages, including the weather search interface.
+components/: Reusable UI components built with RippleUI.
+public/: Static assets like images or icons.
+API Integration
+This app fetches weather data from a Laravel backend that retrieves information from OpenWeather’s APIs. Ensure the backend is running before using the app.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Extras
+TypeScript ensures type safety and fewer runtime errors.
+Fully responsive design for mobile and desktop users.
+Enjoy exploring the weather in your city! 🌤️
