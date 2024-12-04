@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import WeatherCard from './components/WeatherCard';
 import ForecastCard from './components/ForecastCard';
 
-// Define interfaces for type safety
 interface WeatherData {
   location: string;
   temperature: number;
@@ -30,33 +29,34 @@ export default function Home() {
     if (!city) return;
 
     try {
-      // Mock implementation - replace with actual API call
-      const weatherData: WeatherData = {
-        location: city,
-        temperature: 25,
-        description: 'Partly cloudy',
-        icon: '02d',
-        windSpeed: 5.5,
-        humidity: 65,
-        date: new Date().toLocaleDateString()
-      };
-      
-      const forecastData: ForecastData[] = [
-        {
-          ...weatherData,
-          day: 'Mon'
-        },
-        {
-          ...weatherData,
-          day: 'Tue'
-        },
-        {
-          ...weatherData,
-          day: 'Wed'
-        }
-      ];
-      
-      setCurrentWeather(weatherData);
+      const response = await fetch(`http://127.0.0.1:8000/api/weather?city=${city}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch weather data');
+      }
+
+      const data = await response.json();
+
+      setCurrentWeather({
+        location: `${data.location.city}, ${data.location.country}`,
+        temperature: data.current.temperature,
+        description: data.current.description,
+        icon: data.current.icon,
+        windSpeed: data.current.wind_speed,
+        humidity: data.current.humidity,
+        date: new Date().toLocaleDateString(),
+      });
+
+      const forecastData = data.forecast.map((day: any) => ({
+        location: `${data.location.city}, ${data.location.country}`,
+        temperature: day.temperature,
+        description: day.description,
+        icon: day.icon,
+        windSpeed: data.current.wind_speed,
+        humidity: data.current.humidity,
+        date: day.date,
+        day: day.day,
+      }));
+
       setForecast(forecastData);
       setError(null);
     } catch (err) {
@@ -74,11 +74,11 @@ export default function Home() {
   return (
     <div className="container mx-auto p-4">
       <div className="flex mb-4">
-        <input 
-          type="text" 
+        <input
+          type="text"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          placeholder="Enter city name" 
+          placeholder="Enter city name"
           className="input input-bordered w-full max-w-xs mr-2"
         />
         <button onClick={handleSearch} className="btn btn-primary">
@@ -93,9 +93,9 @@ export default function Home() {
       )}
 
       {currentWeather && (
-        <WeatherCard 
-          data={currentWeather} 
-          isCelsius={isCelsius} 
+        <WeatherCard
+          data={currentWeather}
+          isCelsius={isCelsius}
           toggleUnit={toggleUnit}
         />
       )}
@@ -103,14 +103,11 @@ export default function Home() {
       {forecast.length > 0 && (
         <div className="grid grid-cols-3 gap-4 mt-4">
           {forecast.map((day, index) => (
-            <ForecastCard 
-              key={index} 
-              data={day} 
-              isCelsius={isCelsius} 
-            />
+            <ForecastCard key={index} data={day} isCelsius={isCelsius} />
           ))}
         </div>
       )}
     </div>
   );
 }
+
