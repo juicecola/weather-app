@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import WeatherCard from './components/WeatherCard';
-import ForecastCard from './components/ForecastCard';
+import React, { useState } from "react";
+import WeatherCard from "./components/WeatherCard";
+import ForecastCard from "./components/ForecastCard";
 
 interface WeatherData {
   location: string;
@@ -19,8 +19,10 @@ interface ForecastData extends WeatherData {
 }
 
 export default function Home() {
-  const [city, setCity] = useState<string>('');
-  const [currentWeather, setCurrentWeather] = useState<WeatherData | null>(null);
+  const [city, setCity] = useState<string>("");
+  const [currentWeather, setCurrentWeather] = useState<WeatherData | null>(
+    null
+  );
   const [forecast, setForecast] = useState<ForecastData[]>([]);
   const [isCelsius, setIsCelsius] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -29,9 +31,11 @@ export default function Home() {
     if (!city) return;
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/weather?city=${city}`);
+      const response = await fetch(
+        `http://127.0.0.1:8000/api/weather?city=${city}`
+      );
       if (!response.ok) {
-        throw new Error('Failed to fetch weather data');
+        throw new Error("Failed to fetch weather data");
       }
 
       const data = await response.json();
@@ -46,6 +50,7 @@ export default function Home() {
         date: new Date().toLocaleDateString(),
       });
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const forecastData = data.forecast.map((day: any) => ({
         location: `${data.location.city}, ${data.location.country}`,
         temperature: day.temperature,
@@ -60,7 +65,8 @@ export default function Home() {
       setForecast(forecastData);
       setError(null);
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+      const errorMessage =
+        err instanceof Error ? err.message : "An unknown error occurred";
       setError(errorMessage);
       setCurrentWeather(null);
       setForecast([]);
@@ -110,4 +116,3 @@ export default function Home() {
     </div>
   );
 }
-
